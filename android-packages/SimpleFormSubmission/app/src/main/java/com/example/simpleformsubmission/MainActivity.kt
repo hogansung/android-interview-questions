@@ -35,6 +35,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun UserForm() {
+    // TODO: Implement a simple form, with TextField components for user's name and email address.
+    // TODO: Display a button labeled "Submit." The "Submit" button should only be enabled when both fields are not empty.
+    // TODO: When the button is clicked, display the entered name and email address below the form.
+
     var name = ""
     var email = ""
 
