@@ -33,6 +33,9 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun LazyListWithClickableItems() {
+    // TODO: Create a LazyColumn that displays a list of items, e.g. "Item 1", "Item 2", ..., "Item 10".
+    // TODO: When an item is clicked, a Snackbar or a simple Text should show the clicked item's name.
+
     val items = List(10) { "Item ${it + 1}" }
 
     Column(
