@@ -1,0 +1,39 @@
+@Composable
+fun UserForm() {
+    var name by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var submitted by remember { mutableStateOf(false) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        TextField(
+            value = name,
+            onValueChange = { name = it },
+            label = { Text("Name") }
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        TextField(
+            value = email,
+            onValueChange = { email = it },
+            label = { Text("Email") }
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(
+            onClick = { submitted = true },
+            enabled = name.isNotEmpty() && email.isNotEmpty()
+        ) {
+            Text("Submit")
+        }
+
+        if (submitted) {
+            Text(
+                text = "Submitted: $name, $email",
+                modifier = Modifier.padding(top = 16.dp)
+            )
+        }
+    }
+}
+
