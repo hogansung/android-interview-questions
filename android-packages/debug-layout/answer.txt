@@ -1,0 +1,25 @@
+@Composable
+fun ContentScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Image(
+            painter = painterResource(R.drawable.sample_image),
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f)
+        )
+        Text(
+            text = "Sample Title",
+            style = MaterialTheme.typography.titleLarge
+        )
+        Text(
+            text = "This is a long description that should wrap properly but it seems to be cut off. Fix this issue to ensure the text displays correctly.",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(top = 8.dp)
+        )
+    }
+}
