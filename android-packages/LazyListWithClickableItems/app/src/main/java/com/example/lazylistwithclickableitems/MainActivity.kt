@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             LazyListWithClickableItemsTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    LazyListWithClickableItems()
+                    LazyListWithClickableItems(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun LazyListWithClickableItems() {
+fun LazyListWithClickableItems(modifier: Modifier = Modifier) {
     // TODO: Create a LazyColumn that displays a list of items, e.g. "Item 1", "Item 2", ..., "Item 10".
     // TODO: When an item is clicked, a Snackbar or a simple Text should show the clicked item's name.
 
@@ -41,7 +41,7 @@ fun LazyListWithClickableItems() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(24.dp, 48.dp)
     ) {
         LazyColumn {
             items(items) { item ->
