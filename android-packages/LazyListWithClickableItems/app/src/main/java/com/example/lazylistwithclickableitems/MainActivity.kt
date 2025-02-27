@@ -16,6 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.lazylistwithclickableitems.ui.theme.LazyListWithClickableItemsTheme
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,11 +39,16 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun LazyListWithClickableItems(modifier: Modifier = Modifier) {
+fun LazyListWithClickableItems(
+    modifier: Modifier = Modifier,
+    onItemClick: (String) -> Unit = {}
+) {
     // TODO: Create a LazyColumn that displays a list of items, e.g. "Item 1", "Item 2", ..., "Item 10".
     // TODO: When an item is clicked, a Snackbar or a simple Text should show the clicked item's name.
 
     val items = List(10) { "Item ${it + 1}" }
+    var clickedItem by remember { mutableStateOf<String?>(null) }
+
 
     Column(
         modifier = Modifier
@@ -47,9 +59,22 @@ fun LazyListWithClickableItems(modifier: Modifier = Modifier) {
             items(items) { item ->
                 Text(
                     text = item,
-                    modifier = Modifier.padding(8.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            clickedItem = item  // Update the state variable
+                            onItemClick(item)    // Call the callback (if needed)
+                        }
+
+                        .padding(8.dp)
                 )
             }
+        }
+        clickedItem?.let {
+            Text(
+                text = "You clicked: $it",
+                modifier = Modifier.padding(top = 16.dp)
+            )
         }
     }
 }
