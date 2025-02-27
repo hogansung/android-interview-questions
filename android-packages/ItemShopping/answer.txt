@@ -1,0 +1,91 @@
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp 
+import androidx.navigation.NavController
+import androidx.navigation.NavType
+import androidx.navigation.compose.*
+import androidx.compose.ui.tooling.preview.Preview
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            MaterialTheme {
+                ItemShoppingApp()
+            }
+        }
+    }
+}
+
+@Composable
+fun ItemShoppingApp() {
+    val navController = rememberNavController()
+    NavHost(navController = navController, startDestination = "list") {
+        composable("list") {
+            ListScreen(navController)
+        }
+        composable(
+            route = "detail/{itemId}",
+            arguments = listOf(navArgument("itemId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val itemId = backStackEntry.arguments?.getString("itemId") ?: "Unknown"
+            DetailScreen(itemId)
+        }
+    }
+}
+
+@Composable
+fun ListScreen(navController: NavController) {
+    val items = List(20) { "Item ${it + 1}" }
+    LazyColumn {
+        items(items) { item ->
+            Text(
+                text = item,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { navController.navigate("detail/${item}") }
+                    .padding(16.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun DetailScreen(itemId: String) {
+    var counter by rememberSaveable { mutableStateOf(0) }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Text(text = "Detail for $itemId", style = MaterialTheme.typography.headlineSmall)
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "Counter: $counter", style = MaterialTheme.typography.titleMedium)
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = { counter++ }) {
+            Text("Increment Counter")
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewListScreen() {
+    // Use a dummy NavController for preview purposes.
+    ListScreen(rememberNavController())
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewDetailScreen() {
+    DetailScreen(itemId = "Item 1")
+}
+
