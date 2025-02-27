@@ -1,0 +1,100 @@
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.animation.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.tooling.preview.Preview
+import kotlinx.coroutines.delay
+
+class ChatActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            MaterialTheme {
+                ChatScreen()
+            }
+        }
+    }
+}
+
+@Composable
+fun ChatScreen() {
+    // A list to hold chat messages
+    val messages = remember { mutableStateListOf<String>() }
+    var currentMessage by remember { mutableStateOf("") }
+    val listState = rememberLazyListState()
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(),
+            state = listState,
+            contentPadding = PaddingValues(8.dp)
+        ) {
+            // Use itemsIndexed to help with animations
+            itemsIndexed(messages) { index, message ->
+                // Animate each message as it appears
+                AnimatedVisibility(
+                    visible = true,
+                    enter = fadeIn(animationSpec = tween(300)) + slideInVertically(
+                        animationSpec = tween(300),
+                        initialOffsetY = { it }
+                    )
+                ) {
+                    Text(
+                        text = message,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp, horizontal = 8.dp)
+                    )
+                }
+            }
+        }
+        
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            TextField(
+                value = currentMessage,
+                onValueChange = { currentMessage = it },
+                placeholder = { Text("Type your message...") },
+                modifier = Modifier.weight(1f)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Button(onClick = {
+                if (currentMessage.isNotBlank()) {
+                    messages.add(currentMessage)
+                    currentMessage = ""
+                }
+            }) {
+                Text("Send")
+            }
+        }
+    }
+    
+    // Automatically scroll to the bottom when a new message is added.
+    LaunchedEffect(messages.size) {
+        if (messages.isNotEmpty()) {
+            listState.animateScrollToItem(messages.size - 1)
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewChatScreen() {
+    ChatScreen()
+}
+
