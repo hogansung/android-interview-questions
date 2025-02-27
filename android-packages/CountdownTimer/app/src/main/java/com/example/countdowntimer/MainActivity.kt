@@ -6,16 +6,26 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.countdowntimer.ui.theme.CountdownTimerTheme
+import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +49,19 @@ fun CountdownTimer(modifier: Modifier = Modifier) {
     // TODO: Create a state variable for the countdown starting at 10.
     // TODO: Use a side-effect (e.g., LaunchedEffect) to update the timer every second.
     // TODO: When the countdown reaches 0, display "Time's up!" and a restart button.
+    var remainTime by remember { mutableStateOf(10) }
+    var restartTrigger by remember { mutableStateOf(true) }
+
+
+    // Use LaunchedEffect to start a coroutine that updates the timer every second
+    LaunchedEffect(restartTrigger) {
+        restartTrigger = false
+        remainTime = 10
+        while (remainTime > 0) {
+            delay(1000L)
+            remainTime--
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -49,6 +72,21 @@ fun CountdownTimer(modifier: Modifier = Modifier) {
     ) {
         // TODO: Display the countdown or "Time's up!" based on timer value.
         // TODO: Display a restart button when the timer is 0.
+        if (remainTime == 0) {
+            Text(text = "Time's up!",
+                modifier = Modifier.padding(16.dp),
+                style = MaterialTheme.typography.headlineLarge,
+                fontSize = 48.sp)
+            Spacer(Modifier.padding((16.dp)))
+            Button(onClick = {restartTrigger = true}) {
+                Text(text = "Restart")
+            }
+        } else {
+            Text(text = "$remainTime",
+                modifier = Modifier.padding(16.dp),
+                style = MaterialTheme.typography.headlineLarge,
+                fontSize = 64.sp)
+        }
     }
 }
 
