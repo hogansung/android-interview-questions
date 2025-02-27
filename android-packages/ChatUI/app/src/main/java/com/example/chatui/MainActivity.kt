@@ -29,14 +29,14 @@ class MainActivity : ComponentActivity() {
 }
 
 /*
-* Objective:
+**Objective**
 Implement a chat interface using Jetpack Compose that supports the following:
 
 A scrollable list of messages displayed in a LazyColumn.
 An input field with a send button to add new messages.
 When a new message is sent, it appears with a fade‑in (and slide‑in) animation.
 The list automatically scrolls to the newest message.
-* */
+*/
 @Composable
 fun ChatScreen() {
     // TODO: Create a state variable to hold the list of messages (e.g., a MutableList<String>).

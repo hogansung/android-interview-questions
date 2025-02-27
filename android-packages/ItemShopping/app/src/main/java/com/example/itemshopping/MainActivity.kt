@@ -26,7 +26,14 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-// Import statements assumed
+/*
+**Objective**
+
+Implement a two‑screen app using Jetpack Compose Navigation. The first screen displays a list of
+items. When an item is tapped, navigate to a detail screen that shows the item’s details and
+includes a counter that the user can increment. Ensure that the detail screen’s state (the counter)
+is preserved (for example, across configuration changes) by using a saveable state.
+*/
 @Composable
 fun ItemShoppingApp() {
     // TODO: Create a NavController using rememberNavController().
