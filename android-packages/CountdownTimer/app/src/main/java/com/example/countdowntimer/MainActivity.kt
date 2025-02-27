@@ -24,7 +24,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             CountdownTimerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    CountdownTimer()
+                    CountdownTimer(
+                        modifier = Modifier.padding(innerPadding)
+
+                    )
                 }
             }
         }
@@ -32,7 +35,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun CountdownTimer() {
+fun CountdownTimer(modifier: Modifier = Modifier) {
     // TODO: Create a state variable for the countdown starting at 10.
     // TODO: Use a side-effect (e.g., LaunchedEffect) to update the timer every second.
     // TODO: When the countdown reaches 0, display "Time's up!" and a restart button.
