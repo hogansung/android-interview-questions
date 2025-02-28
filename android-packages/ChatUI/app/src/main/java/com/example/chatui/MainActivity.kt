@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ChatUITheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    ChatScreen()
+                    ChatScreen(Modifier.padding(innerPadding))
                 }
             }
         }
@@ -38,7 +38,7 @@ When a new message is sent, it appears with a fade‑in (and slide‑in) animati
 The list automatically scrolls to the newest message.
 */
 @Composable
-fun ChatScreen() {
+fun ChatScreen(modifier: Modifier = Modifier) {
     // TODO: Create a state variable to hold the list of messages (e.g., a MutableList<String>).
     // TODO: Create a state for the current text input.
     // TODO: Remember a LazyListState for the LazyColumn.
