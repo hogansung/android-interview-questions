@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,7 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ItemShoppingTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    ItemShoppingApp()
+                    ItemShoppingApp(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
@@ -35,7 +36,7 @@ includes a counter that the user can increment. Ensure that the detail screen’
 is preserved (for example, across configuration changes) by using a saveable state.
 */
 @Composable
-fun ItemShoppingApp() {
+fun ItemShoppingApp(modifier: Modifier = Modifier) {
     // TODO: Create a NavController using rememberNavController().
     // TODO: Set up a NavHost with two routes: "list" and "detail/{itemId}".
 }
