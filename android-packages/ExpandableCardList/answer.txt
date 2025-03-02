@@ -1,0 +1,36 @@
+@Composable
+fun ExpandableCardList() {
+    val items = List(10) { index ->
+        "Title ${index + 1}" to "This is the detailed description for item ${index + 1}. It may contain more information and is visible only when expanded."
+    }
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(16.dp)
+    ) {
+        items(items) { (title, description) ->
+            var expanded by remember { mutableStateOf(false) }
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+                    .clickable { expanded = !expanded }
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(text = title, style = MaterialTheme.typography.titleMedium)
+                    AnimatedVisibility(
+                        visible = expanded,
+                        enter = fadeIn(animationSpec = tween(300)) + slideInVertically(animationSpec = tween(300)),
+                        exit = fadeOut(animationSpec = tween(300)) + slideOutVertically(animationSpec = tween(300))
+                    ) {
+                        Text(
+                            text = description,
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(top = 8.dp)
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
