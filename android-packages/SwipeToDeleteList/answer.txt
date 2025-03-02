@@ -1,0 +1,37 @@
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SwipeToDeleteList() {
+    var items by remember { mutableStateOf(List(10) { "Item ${it + 1}" }) }
+    
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(16.dp)
+    ) {
+        items(items, key = { it }) { item ->
+            val dismissState = rememberDismissState(
+                confirmValueChange = { dismissValue ->
+                    if (dismissValue == DismissValue.DismissedToEnd || dismissValue == DismissValue.DismissedToStart) {
+                        items = items.toMutableList().also { it.remove(item) }
+                    }
+                    true
+                }
+            )
+            SwipeToDismiss(
+                state = dismissState,
+                background = {},
+                dismissContent = {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp)
+                    ) {
+                        ListItem(
+                            headlineText = { Text(item) }
+                        )
+                    }
+                }
+            )
+        }
+    }
+}
+
