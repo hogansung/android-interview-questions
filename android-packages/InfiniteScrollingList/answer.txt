@@ -1,0 +1,38 @@
+@Composable
+fun InfiniteScrollingList() {
+    var items by remember { mutableStateOf(List(20) { it + 1 }) }
+    var isLoading by remember { mutableStateOf(false) }
+    val listState = rememberLazyListState()
+    
+    LaunchedEffect(listState) {
+        snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
+            .collect { lastVisibleIndex ->
+                if (lastVisibleIndex != null && lastVisibleIndex >= items.size - 5 && !isLoading) {
+                    isLoading = true
+                    delay(2000L)
+                    val nextItems = List(20) { items.size + it + 1 }
+                    items = items + nextItems
+                    isLoading = false
+                }
+            }
+    }
+    
+    LazyColumn(state = listState, modifier = Modifier.fillMaxSize()) {
+        items(items) { item ->
+            Text("Item $item", modifier = Modifier.padding(16.dp))
+        }
+        if (isLoading) {
+            item {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+        }
+    }
+}
+
