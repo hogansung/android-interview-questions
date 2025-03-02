@@ -1,0 +1,64 @@
+@Composable
+fun RegistrationForm() {
+    var username by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
+    var hasReferral by remember { mutableStateOf(false) }
+    var referralCode by remember { mutableStateOf("") }
+    var submitted by remember { mutableStateOf(false) }
+
+    Column(modifier = Modifier.padding(16.dp)) {
+        OutlinedTextField(
+            value = username,
+            onValueChange = { username = it },
+            label = { Text("Username") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(
+            value = password,
+            onValueChange = { password = it },
+            label = { Text("Password") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(
+            value = confirmPassword,
+            onValueChange = { confirmPassword = it },
+            label = { Text("Confirm Password") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Checkbox(checked = hasReferral, onCheckedChange = { hasReferral = it })
+            Text(text = "I have a referral code")
+        }
+        if (hasReferral) {
+            OutlinedTextField(
+                value = referralCode,
+                onValueChange = { referralCode = it },
+                label = { Text("Referral Code") },
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        val isFormValid = username.isNotBlank() &&
+                          password.isNotBlank() &&
+                          password == confirmPassword &&
+                          (!hasReferral || referralCode.isNotBlank())
+        
+        Button(
+            onClick = { submitted = true },
+            enabled = isFormValid,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Submit")
+        }
+        
+        if (submitted) {
+            Text("Registration successful!", modifier = Modifier.padding(top = 16.dp))
+        }
+    }
+}
+
