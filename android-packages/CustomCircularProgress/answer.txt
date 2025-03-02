@@ -1,0 +1,30 @@
+@Composable
+fun CustomCircularProgress(progress: Float) {
+    val animatedProgress by animateFloatAsState(
+        targetValue = progress,
+        animationSpec = tween(durationMillis = 1000)
+    )
+    
+    Box(
+        modifier = Modifier.size(100.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Canvas(modifier = Modifier.size(100.dp)) {
+            // Draw the background circle.
+            drawCircle(
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                style = Stroke(width = 8f)
+            )
+            // Draw the progress arc.
+            drawArc(
+                color = MaterialTheme.colorScheme.primary,
+                startAngle = -90f,
+                sweepAngle = 360 * animatedProgress,
+                useCenter = false,
+                style = Stroke(width = 8f)
+            )
+        }
+        Text(text = "${(animatedProgress * 100).toInt()}%", style = MaterialTheme.typography.bodyLarge)
+    }
+}
+
