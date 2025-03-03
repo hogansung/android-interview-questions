@@ -7,7 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,7 +19,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             CustomCircularProgressTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    CustomCircularProgress(progress = 0.75f)
+                    CustomCircularProgress(progress = 0.75f, Modifier.padding(innerPadding))
                 }
             }
         }
@@ -34,7 +33,10 @@ displays the percentage inside the circle. Use Compose’s Canvas to draw the in
 the progress.
 */
 @Composable
-fun CustomCircularProgress(progress: Float) {
+fun CustomCircularProgress(
+    progress: Float,
+    modifier: Modifier = Modifier
+    ) {
     // TODO: Animate the progress value when it changes.
     // TODO: Use Canvas to draw a background circle.
     // TODO: Draw an arc representing the animated progress (from 0.0 to 1.0).
