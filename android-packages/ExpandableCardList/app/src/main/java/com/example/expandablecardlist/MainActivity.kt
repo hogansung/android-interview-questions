@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ExpandableCardListTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    ExpandableCardList()
+                    ExpandableCardList(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
@@ -33,7 +33,7 @@ Create a list of cards using LazyColumn. Each card shows a title and can be tapp
 reveal additional details with a smooth animation.
 */
 @Composable
-fun ExpandableCardList() {
+fun ExpandableCardList(modifier: Modifier = Modifier) {
     // TODO: Create a list of card data (e.g., a list of title/description pairs).
     // TODO: Display the cards in a LazyColumn.
     // TODO: For each card, allow the card to be tapped to toggle between expanded and collapsed states.
