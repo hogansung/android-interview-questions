@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             InfiniteScrollingListTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    InfiniteScrollingList()
+                    InfiniteScrollingList(modifier = Modifier.padding((innerPadding)))
                 }
             }
         }
@@ -36,7 +36,7 @@ the user scrolls near the bottom, simulate loading the next page (with a delay) 
 the list. Display a loading indicator during the data fetch.
 */
 @Composable
-fun InfiniteScrollingList() {
+fun InfiniteScrollingList(modifier: Modifier = Modifier) {
     // TODO: Create a state variable for a list of items (e.g., List<Int>) and initialize with the first page.
     // TODO: Create a state variable for loading status.
     // TODO: Create a LazyListState for the LazyColumn.
