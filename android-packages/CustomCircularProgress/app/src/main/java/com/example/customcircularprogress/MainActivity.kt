@@ -52,13 +52,13 @@ fun CustomCircularProgress(
     progress: Float,
     modifier: Modifier = Modifier
     ) {
-    // TODO: Animate the progress value when it changes.
+    // Animate the progress value when it changes.
     // 使用 animateFloatAsState 將目標進度做動畫過渡
     val animatedProgress by animateFloatAsState(
         targetValue = progress,
-        animationSpec = tween(durationMillis = 1000)
+        animationSpec = tween(durationMillis = 1000) // 動畫從開始到結束 的整個過程會持續 1 秒鐘
     )
-    // TODO: Use Canvas to draw a background circle.
+    // Use Canvas to draw a background circle.
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -78,7 +78,7 @@ fun CustomCircularProgress(
                 style = Stroke(width = strokeWidth)
             )
 
-            // TODO: Draw an arc representing the animated progress (from 0.0 to 1.0).
+            // Draw an arc representing the animated progress (from 0.0 to 1.0).
             // 根據 animatedProgress 畫進度弧線，從 -90°（即頂部）開始
             drawArc(
                 color = Color.DarkGray,
@@ -91,7 +91,7 @@ fun CustomCircularProgress(
             )
         }
 
-        // TODO: Display the percentage (e.g., "75%") in the center.
+        // Display the percentage (e.g., "75%") in the center.
         // 在圓心顯示百分比數字
         Text(
             text = "${(animatedProgress * 100).toInt()}%",
