@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             RegistrationFormTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    RegistrationForm()
+                    RegistrationForm(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
@@ -36,7 +36,7 @@ a checkbox selection. The submit button should only be enabled when all required
 and on submit, display a success message.
  */
 @Composable
-fun RegistrationForm() {
+fun RegistrationForm(modifier: Modifier = Modifier) {
     // TODO: Create state variables for username, password, confirm password, and referral code.
     // TODO: Create a state variable for a checkbox that toggles the visibility of the referral code field.
     // TODO: Create a state variable for submission status.

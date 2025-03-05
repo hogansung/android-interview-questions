@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.registrationform"
-        minSdk = 35
+        minSdk = 34
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
