@@ -1,0 +1,70 @@
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import kotlin.math.*
+
+@Composable
+fun PieChart(data: List<Pair<String, Float>>) {
+    var selectedSlice by remember { mutableStateOf<Pair<String, Float>?>(null) }
+    val total = data.sumOf { it.second.toDouble() }.toFloat()
+    val startAngleOffset = -90f
+
+    Box(modifier = Modifier.size(200.dp), contentAlignment = Alignment.Center) {
+        Canvas(
+            modifier = Modifier
+                .size(200.dp)
+                .pointerInput(Unit) {
+                    detectTapGestures { tapOffset ->
+                        val center = Offset(size.width / 2, size.height / 2)
+                        val dx = tapOffset.x - center.x
+                        val dy = tapOffset.y - center.y
+                        val tapAngle = ((atan2(dy, dx) * 180f / PI.toFloat()) + 360f) % 360f
+                        var cumulativeAngle = 0f
+                        data.forEach { (label, value) ->
+                            val sweepAngle = (value / total) * 360f
+                            if (tapAngle in (startAngleOffset + cumulativeAngle) % 360f..(startAngleOffset + cumulativeAngle + sweepAngle) % 360f) {
+                                selectedSlice = label to value
+                            }
+                            cumulativeAngle += sweepAngle
+                        }
+                    }
+                }
+        ) {
+            var currentStart = startAngleOffset
+            data.forEach { (label, value) ->
+                val sweep = (value / total) * 360f
+                drawArc(
+                    color = Color(
+                        red = (50..255).random(),
+                        green = (50..255).random(),
+                        blue = (50..255).random()
+                    ),
+                    startAngle = currentStart,
+                    sweepAngle = sweep,
+                    useCenter = true,
+                    style = Stroke(width = 0f)
+                )
+                currentStart += sweep
+            }
+        }
+        selectedSlice?.let { (label, value) ->
+            Text(
+                text = "$label: $value",
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        }
+    }
+}
+
