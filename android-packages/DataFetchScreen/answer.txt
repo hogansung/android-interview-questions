@@ -1,0 +1,77 @@
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+
+sealed class DataState {
+    object Loading : DataState()
+    data class Success(val data: List<String>) : DataState()
+    object Error : DataState()
+}
+
+class DataFetchViewModel : ViewModel() {
+    private val _dataState = MutableStateFlow<DataState>(DataState.Loading)
+    val dataState: StateFlow<DataState> = _dataState.asStateFlow()
+
+    init {
+        fetchData()
+    }
+
+    fun fetchData() {
+        viewModelScope.launch {
+            _dataState.value = DataState.Loading
+            delay(2000L)
+            // Simulate a 70% chance of success.
+            if (Math.random() < 0.7) {
+                _dataState.value = DataState.Success(listOf("Alpha", "Beta", "Gamma", "Delta"))
+            } else {
+                _dataState.value = DataState.Error
+            }
+        }
+    }
+}
+
+@Composable
+fun DataFetchScreen(viewModel: DataFetchViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+    val dataState by viewModel.dataState.collectAsState()
+
+    when (dataState) {
+        is DataState.Loading -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
+        }
+        is DataState.Error -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("Failed to fetch data.")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Button(onClick = { viewModel.fetchData() }) {
+                        Text("Retry")
+                    }
+                }
+            }
+        }
+        is DataState.Success -> {
+            val data = (dataState as DataState.Success).data
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(16.dp)
+            ) {
+                items(data) { item ->
+                    Text(item, modifier = Modifier.padding(8.dp))
+                }
+            }
+        }
+    }
+}
+
