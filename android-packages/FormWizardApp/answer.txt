@@ -1,0 +1,159 @@
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.*
+
+data class FormData(
+    val firstName: String = "",
+    val lastName: String = "",
+    val email: String = "",
+    val phone: String = "",
+    val address: String = ""
+)
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            MaterialTheme {
+                FormWizardApp()
+            }
+        }
+    }
+}
+
+@Composable
+fun FormWizardApp() {
+    val navController = rememberNavController()
+    var formData by rememberSaveable { mutableStateOf(FormData()) }
+
+    NavHost(navController = navController, startDestination = "stepOne") {
+        composable("stepOne") {
+            StepOneScreen(navController, formData) { formData = it }
+        }
+        composable("stepTwo") {
+            StepTwoScreen(navController, formData) { formData = it }
+        }
+        composable("stepThree") {
+            StepThreeScreen(navController, formData) { formData = it }
+        }
+        composable("summary") {
+            SummaryScreen(formData)
+        }
+    }
+}
+
+@Composable
+fun StepOneScreen(navController: NavController, formData: FormData, updateFormData: (FormData) -> Unit) {
+    var firstName by rememberSaveable { mutableStateOf(formData.firstName) }
+    var lastName by rememberSaveable { mutableStateOf(formData.lastName) }
+
+    Column(modifier = Modifier.padding(16.dp)) {
+        Text("Step 1: Personal Info", style = MaterialTheme.typography.headlineSmall)
+        Spacer(modifier = Modifier.height(16.dp))
+        OutlinedTextField(
+            value = firstName,
+            onValueChange = { firstName = it },
+            label = { Text("First Name") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(
+            value = lastName,
+            onValueChange = { lastName = it },
+            label = { Text("Last Name") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = {
+            updateFormData(formData.copy(firstName = firstName, lastName = lastName))
+            navController.navigate("stepTwo")
+        }, modifier = Modifier.fillMaxWidth()) {
+            Text("Next")
+        }
+    }
+}
+
+@Composable
+fun StepTwoScreen(navController: NavController, formData: FormData, updateFormData: (FormData) -> Unit) {
+    var email by rememberSaveable { mutableStateOf(formData.email) }
+    var phone by rememberSaveable { mutableStateOf(formData.phone) }
+
+    Column(modifier = Modifier.padding(16.dp)) {
+        Text("Step 2: Contact Info", style = MaterialTheme.typography.headlineSmall)
+        Spacer(modifier = Modifier.height(16.dp))
+        OutlinedTextField(
+            value = email,
+            onValueChange = { email = it },
+            label = { Text("Email") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(
+            value = phone,
+            onValueChange = { phone = it },
+            label = { Text("Phone Number") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Row {
+            Button(onClick = { navController.popBackStack() }, modifier = Modifier.weight(1f)) {
+                Text("Previous")
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            Button(onClick = {
+                updateFormData(formData.copy(email = email, phone = phone))
+                navController.navigate("stepThree")
+            }, modifier = Modifier.weight(1f)) {
+                Text("Next")
+            }
+        }
+    }
+}
+
+@Composable
+fun StepThreeScreen(navController: NavController, formData: FormData, updateFormData: (FormData) -> Unit) {
+    var address by rememberSaveable { mutableStateOf(formData.address) }
+
+    Column(modifier = Modifier.padding(16.dp)) {
+        Text("Step 3: Address", style = MaterialTheme.typography.headlineSmall)
+        Spacer(modifier = Modifier.height(16.dp))
+        OutlinedTextField(
+            value = address,
+            onValueChange = { address = it },
+            label = { Text("Address") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Row {
+            Button(onClick = { navController.popBackStack() }, modifier = Modifier.weight(1f)) {
+                Text("Previous")
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            Button(onClick = {
+                updateFormData(formData.copy(address = address))
+                navController.navigate("summary")
+            }, modifier = Modifier.weight(1f)) {
+                Text("Submit")
+            }
+        }
+    }
+}
+
+@Composable
+fun SummaryScreen(formData: FormData) {
+    Column(modifier = Modifier.padding(16.dp)) {
+        Text("Summary", style = MaterialTheme.typography.headlineSmall)
+        Spacer(modifier = Modifier.height(16.dp))
+        Text("Name: ${formData.firstName} ${formData.lastName}")
+        Text("Email: ${formData.email}")
+        Text("Phone: ${formData.phone}")
+        Text("Address: ${formData.address}")
+    }
+}
+
