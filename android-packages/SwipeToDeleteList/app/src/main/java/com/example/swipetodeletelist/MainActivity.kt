@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             SwipeToDeleteListTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    SwipeToDeleteList()
+                    SwipeToDeleteList(Modifier.padding(innerPadding))
                 }
             }
         }
@@ -33,7 +33,7 @@ Implement a list of items where each item can be swiped away to delete it. Use C
 swipe-to-dismiss functionality and animate the removal.
 */
 @Composable
-fun SwipeToDeleteList() {g
+fun SwipeToDeleteList(modifier: Modifier = Modifier) {
     // TODO: Create a state variable for a list of items.
     // TODO: Display the items in a LazyColumn.
     // TODO: For each item, implement swipe-to-dismiss functionality:
