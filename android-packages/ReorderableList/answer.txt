@@ -1,0 +1,60 @@
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.dp
+
+@Composable
+fun ReorderableList() {
+    // Initialize a mutable state list of items.
+    var items by remember { mutableStateOf(List(10) { "Item ${it + 1}" }) }
+    
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        itemsIndexed(items, key = { _, item -> item }) { index, item ->
+            // Each item can be long-pressed to enable dragging.
+            var offsetY by remember { mutableStateOf(0f) }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+                    .animateContentSize()
+                    .pointerInput(Unit) {
+                        detectDragGesturesAfterLongPress(
+                            onDrag = { change, dragAmount ->
+                                change.consume()
+                                offsetY += dragAmount.y
+                            },
+                            onDragEnd = {
+                                // For simplicity, if the drag was significant, swap with the previous item.
+                                if (offsetY < -50 && index > 0) {
+                                    items = items.toMutableList().also {
+                                        val movedItem = it.removeAt(index)
+                                        it.add(index - 1, movedItem)
+                                    }
+                                } else if (offsetY > 50 && index < items.size - 1) {
+                                    items = items.toMutableList().also {
+                                        val movedItem = it.removeAt(index)
+                                        it.add(index + 1, movedItem)
+                                    }
+                                }
+                                offsetY = 0f
+                            }
+                        )
+                    }
+                    .background(MaterialTheme.colorScheme.primaryContainer, shape = RoundedCornerShape(8.dp))
+                    .padding(16.dp)
+            ) {
+                Text(text = item, color = MaterialTheme.colorScheme.onPrimaryContainer)
+            }
+        }
+    }
+}
+
