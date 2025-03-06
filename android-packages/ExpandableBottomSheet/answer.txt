@@ -1,0 +1,53 @@
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectVerticalDragGestures
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.consumeAllChanges
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
+import kotlin.math.roundToInt
+
+@Composable
+fun ExpandableBottomSheet() {
+    // Define the collapsed and expanded heights (in pixels).
+    val collapsedHeight = 100f
+    val expandedHeight = 400f
+    var sheetHeight by remember { mutableStateOf(collapsedHeight) }
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        // Main content in the background.
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text("Main Content")
+        }
+        // The bottom sheet.
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                // Offset from the top such that the sheet appears from the bottom.
+                .offset { IntOffset(0, (expandedHeight - sheetHeight).roundToInt()) }
+                .height(sheetHeight.dp)
+                .background(MaterialTheme.colorScheme.primaryContainer)
+                .pointerInput(Unit) {
+                    detectVerticalDragGestures(
+                        onDrag = { change, dragAmount ->
+                            change.consumeAllChanges()
+                            sheetHeight = (sheetHeight - dragAmount).coerceIn(collapsedHeight, expandedHeight)
+                        },
+                        onDragEnd = {
+                            // Snap to the nearest state.
+                            sheetHeight = if (sheetHeight < (collapsedHeight + expandedHeight) / 2) collapsedHeight else expandedHeight
+                        }
+                    )
+                }
+        ) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text("Bottom Sheet Content", color = MaterialTheme.colorScheme.onPrimaryContainer)
+            }
+        }
+    }
+}
+
