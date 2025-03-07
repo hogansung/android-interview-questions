@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.material3.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -65,4 +66,15 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.10.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.5")
     implementation("androidx.navigation:navigation-compose:2.8.7")
+
+    // material3
+    implementation("androidx.compose.material3:material3-window-size-class:1.3.1")
+    implementation("androidx.compose.material3:material3-adaptive-navigation-suite:1.4.0-alpha09")
+    // 1) 先使用一個能支援 alpha Material 3 的 Compose BOM（或直接不用 BOM）
+    implementation(platform("androidx.compose:compose-bom:2025.02.00"))
+    // 2) 明確指定 alpha 版本的 material3
+//    implementation("androidx.compose.material3:material3:1.5.0-alpha01")
+    implementation("androidx.compose.material3:material3:1.4.0-alpha07")
+    implementation ("androidx.compose.material:material-icons-extended:1.7.6")
+
 }
