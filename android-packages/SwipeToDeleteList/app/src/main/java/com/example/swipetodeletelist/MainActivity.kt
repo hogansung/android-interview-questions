@@ -18,7 +18,6 @@ import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -65,7 +64,6 @@ swipe-to-dismiss functionality and animate the removal.
 @Composable
 fun SwipeToDeleteList(modifier: Modifier = Modifier) {
     // Create a state variable for a list of items.
-//    var itemsList = remember { mutableStateListOf<Int>().apply {addAll(1..40)} }
     val itemsList = rememberSaveable(saver = IntListSaver) {
         mutableStateListOf<Int>().apply { addAll(1..40) }
     }
