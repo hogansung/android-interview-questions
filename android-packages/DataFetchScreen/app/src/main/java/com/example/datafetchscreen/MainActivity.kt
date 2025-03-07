@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             DataFetchScreenTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    DataFetchScreen()
+                    DataFetchScreen(Modifier.padding(innerPadding))
                 }
             }
         }
@@ -35,7 +35,7 @@ display an error message with a retry button if the fetch fails.
 */
 
 @Composable
-fun DataFetchScreen() {
+fun DataFetchScreen(modifier: Modifier = Modifier) {
     // TODO: Create a ViewModel that simulates data fetching (using delay) and exposes a Flow or LiveData.
     // TODO: In the composable, collect the data state.
     // TODO: Show a CircularProgressIndicator while loading.
