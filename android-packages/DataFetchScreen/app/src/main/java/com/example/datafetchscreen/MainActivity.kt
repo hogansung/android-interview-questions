@@ -47,19 +47,15 @@ display an error message with a retry button if the fetch fails.
 
 @Composable
 fun DataFetchScreen(modifier: Modifier = Modifier) {
-    // TODO: Create a ViewModel that simulates data fetching (using delay) and exposes a Flow or LiveData.
+    // Create a ViewModel that simulates data fetching (using delay) and exposes a Flow or LiveData.
     val viewModel: MainViewModel = viewModel()
 
-    // TODO: In the composable, collect the data state.
+    // In the composable, collect the data state.
     val uiState = viewModel.uiState.collectAsState() // 取得 UI 狀態（Flow -> State）
 
-    // TODO: Show a CircularProgressIndicator while loading.
-
-
-    // TODO: Display the list of data or an error message with a retry button.
     when (val state = uiState.value) {
         is DataFetchUiState.Loading -> {
-            // 載入中，顯示一個 CircularProgressIndicator
+            // Show a CircularProgressIndicator while loading.
             Box(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -68,6 +64,7 @@ fun DataFetchScreen(modifier: Modifier = Modifier) {
                 CircularProgressIndicator()
             }
         }
+        // Display the list of data or an error message with a retry button.
         is DataFetchUiState.Success -> {
             // 成功取得資料，假設資料為 List<String>，使用 LazyColumn 顯示
             LazyColumn(
