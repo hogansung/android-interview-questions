@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ExpandableBottomSheetTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    ExpandableBottomSheet()
+                    ExpandableBottomSheet(Modifier.padding(innerPadding))
                 }
             }
         }
@@ -35,7 +35,7 @@ state once the drag ends.
  */
 
 @Composable
-fun ExpandableBottomSheet() {
+fun ExpandableBottomSheet(modifier: Modifier = Modifier) {
     // TODO: Define state variables to track the current height/offset of the bottom sheet.
     // TODO: Use pointerInput to implement vertical drag gestures.
     // TODO: Snap the bottom sheet to either a collapsed or expanded state when the drag ends.
