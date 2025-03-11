@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             FormWizardAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    FormWizardApp()
+                    FormWizardApp(Modifier.padding(innerPadding))
                 }
             }
         }
@@ -45,7 +45,7 @@ data class FormData(
 )
 
 @Composable
-fun FormWizardApp() {
+fun FormWizardApp(modifier: Modifier = Modifier) {
     // TODO: Create a NavController and set up a NavHost with routes for "stepOne", "stepTwo", "stepThree", and "summary".
     // TODO: Maintain a state variable for FormData (and update it between screens).
 }
