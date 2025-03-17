@@ -1,6 +1,7 @@
 package com.example.formwizardapp
 
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -14,7 +15,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,6 +31,16 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.formwizardapp.ui.theme.FormWizardAppTheme
 import androidx.compose.foundation.layout.Row
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class FormData(
+    val firstName: String = "",
+    val lastName: String = "",
+    val email: String = "",
+    val phone: String = "",
+    val address: String = ""
+) : Parcelable
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,18 +64,10 @@ must be preserved across screens (using, for example, a shared state via a data 
 rememberSaveable).
 */
 
-data class FormData(
-    val firstName: String = "",
-    val lastName: String = "",
-    val email: String = "",
-    val phone: String = "",
-    val address: String = ""
-)
-
 @Composable
 fun FormWizardApp(modifier: Modifier = Modifier) {
-    // TODO: Create a NavController and set up a NavHost with routes for "stepOne", "stepTwo", "stepThree", and "summary".
-    // TODO: Maintain a state variable for FormData (and update it between screens).
+    // Create a NavController and set up a NavHost with routes for "stepOne", "stepTwo", "stepThree", and "summary".
+    // Maintain a state variable for FormData (and update it between screens).
     val navController = rememberNavController()
     val formDataState = rememberSaveable { mutableStateOf(FormData()) }
     NavHost(
@@ -105,9 +107,11 @@ fun StepOneScreen(navController: NavController, formData: FormData, updateFormDa
     var firstName by remember { mutableStateOf(formData.firstName) }
     var lastName by remember { mutableStateOf(formData.lastName) }
 
-    // TODO: Display input fields for first name and last name.
-    // TODO: Provide a "Next" button to navigate to "stepTwo", updating the FormData.
-    Column {
+    // Display input fields for first name and last name.
+    // Provide a "Next" button to navigate to "stepTwo", updating the FormData.
+    Column(
+        modifier = Modifier.padding(16.dp)
+    ) {
         OutlinedTextField(
             value = lastName,
             onValueChange = { lastName = it },
@@ -132,12 +136,14 @@ fun StepOneScreen(navController: NavController, formData: FormData, updateFormDa
 
 @Composable
 fun StepTwoScreen(navController: NavController, formData: FormData, updateFormData: (FormData) -> Unit) {
-    // TODO: Display input fields for email and phone.
-    // TODO: Provide "Previous" and "Next" buttons to navigate back or forward.
-    var email by remember { mutableStateOf(formData.firstName) }
-    var phone by remember { mutableStateOf(formData.lastName) }
+    // Display input fields for email and phone.
+    // Provide "Previous" and "Next" buttons to navigate back or forward.
+    var email by remember { mutableStateOf(formData.email) }
+    var phone by remember { mutableStateOf(formData.phone) }
 
-    Column {
+    Column(
+        modifier = Modifier.padding(16.dp)
+    )  {
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
@@ -175,11 +181,13 @@ fun StepTwoScreen(navController: NavController, formData: FormData, updateFormDa
 
 @Composable
 fun StepThreeScreen(navController: NavController, formData: FormData, updateFormData: (FormData) -> Unit) {
-    // TODO: Display an input field for address.
-    // TODO: Provide "Previous" and "Submit" buttons. On submit, navigate to "summary".
-    var address by remember { mutableStateOf(formData.firstName) }
+    // Display an input field for address.
+    // Provide "Previous" and "Submit" buttons. On submit, navigate to "summary".
+    var address by remember { mutableStateOf(formData.address) }
 
-    Column {
+    Column(
+        modifier = Modifier.padding(16.dp)
+    )  {
         OutlinedTextField(
             value = address,
             onValueChange = { address = it },
@@ -210,8 +218,10 @@ fun StepThreeScreen(navController: NavController, formData: FormData, updateForm
 
 @Composable
 fun SummaryScreen(formData: FormData) {
-    // TODO: Display a summary of the collected form data.
-    Column {
+    // Display a summary of the collected form data.
+    Column(
+        modifier = Modifier.padding(16.dp)
+    )  {
         Text(text = "firstName: ${formData.firstName}")
         Spacer(modifier = Modifier.height(8.dp))
         Text(text = "lastName: ${formData.lastName}")
