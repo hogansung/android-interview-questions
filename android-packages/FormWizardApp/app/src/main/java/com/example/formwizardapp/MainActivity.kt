@@ -30,6 +30,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.formwizardapp.ui.theme.FormWizardAppTheme
+import androidx.compose.foundation.layout.Row
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -133,17 +134,94 @@ fun StepOneScreen(navController: NavController, formData: FormData, updateFormDa
 fun StepTwoScreen(navController: NavController, formData: FormData, updateFormData: (FormData) -> Unit) {
     // TODO: Display input fields for email and phone.
     // TODO: Provide "Previous" and "Next" buttons to navigate back or forward.
+    var email by remember { mutableStateOf(formData.firstName) }
+    var phone by remember { mutableStateOf(formData.lastName) }
+
+    Column {
+        OutlinedTextField(
+            value = email,
+            onValueChange = { email = it },
+            label = { Text("Email") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(
+            value = phone,
+            onValueChange = { phone = it },
+            label = { Text("Phone") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Button(
+                onClick = {
+                    navController.navigate("stepOne")
+                }) {
+                Text("Previous")
+            }
+            Spacer(modifier = Modifier.weight(1f)) // 分配剩餘空間，將 Next 按鈕推到右側
+            Button(
+                onClick = {
+                    updateFormData(formData.copy(email = email, phone = phone))
+                    navController.navigate("stepThree")
+                }){
+                Text("Next")
+            }
+        }
+    }
 }
 
 @Composable
 fun StepThreeScreen(navController: NavController, formData: FormData, updateFormData: (FormData) -> Unit) {
     // TODO: Display an input field for address.
     // TODO: Provide "Previous" and "Submit" buttons. On submit, navigate to "summary".
+    var address by remember { mutableStateOf(formData.firstName) }
+
+    Column {
+        OutlinedTextField(
+            value = address,
+            onValueChange = { address = it },
+            label = { Text("Address") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Button(
+                onClick = {
+                    navController.navigate("stepTwo")
+                }) {
+                Text("Previous")
+            }
+            Spacer(modifier = Modifier.weight(1f)) // 分配剩餘空間，將 Next 按鈕推到右側
+            Button(
+                onClick = {
+                    updateFormData(formData.copy(address = address))
+                    navController.navigate("summary")
+                }){
+                Text("Next")
+            }
+        }
+    }
 }
 
 @Composable
 fun SummaryScreen(formData: FormData) {
     // TODO: Display a summary of the collected form data.
+    Column {
+        Text(text = "firstName: ${formData.firstName}")
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(text = "lastName: ${formData.lastName}")
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(text = "email: ${formData.email}")
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(text = "phone: ${formData.phone}")
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(text = "address: ${formData.address}")
+    }
 }
 
 @Preview(showBackground = true)
