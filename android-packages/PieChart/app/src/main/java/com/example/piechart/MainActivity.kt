@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             PieChartTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    PieChart(data = listOf("Label 1" to 0.2f, "Label 2" to 0.3f, "Label 3" to 0.5f))
+                    PieChart(Modifier.padding(innerPadding), data = listOf("Label 1" to 0.2f, "Label 2" to 0.3f, "Label 3" to 0.5f))
                 }
             }
         }
@@ -35,7 +35,7 @@ in the center).
 */
 
 @Composable
-fun PieChart(data: List<Pair<String, Float>>) {
+fun PieChart(modifier: Modifier = Modifier, data: List<Pair<String, Float>>) {
     // TODO: Draw a pie chart using Canvas based on the provided data.
     // TODO: Animate the drawing of each slice.
     // TODO: Detect tap gestures on slices and display a tooltip with the slice's label and value.
