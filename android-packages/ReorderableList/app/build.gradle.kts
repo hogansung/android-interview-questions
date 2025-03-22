@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.reorderablelist"
-        minSdk = 35
+        minSdk = 34
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -65,4 +65,6 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.10.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.5")
     implementation("androidx.navigation:navigation-compose:2.8.7")
+    implementation("androidx.compose.animation:animation:1.7.8")
+
 }
